@@ -1,7 +1,7 @@
 service: gateway
 
 provider:
-  stackName: "${self:custom.prefix}-${self:service}"
+  stackName: "${self:custom.stage}-${self:service}"
   name: aws
   deploymentBucket:
     name: ${self:custom.env.bucketName}
@@ -25,6 +25,7 @@ resources:
     HelloReadEndPoint:
       Type: AWS::ApiGateway::Method
       Properties:
+        AuthorizationType: NONE
         HttpMethod: GET
         Integration: 
           IntegrationHttpMethod: POST
@@ -81,5 +82,5 @@ resources:
           Ref: SharedApiGateway
 
 custom:
-  env: ${file(./${opt:stage, 'dev'}.yml)}
-  prefix: ${opt:prefix, 'hello-test'}
+  env: ${file(./${opt:env, 'dev'}.yml)}
+  stage: ${opt:stage, 'hello-test'}
