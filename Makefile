@@ -1,21 +1,18 @@
 .PHONY: deploy remove help echo
 default: deploy
 
-BRANCH = $(shell git symbolic-ref --short HEAD | cut -c1-10)
-TICKET_NUMBER = $(shell echo $(BRANCH) | cut -c7- )
+BRANCH = $(shell git symbolic-ref --short HEAD | cut -c1-30)
+TICKET_NUMBER = $(shell echo $(BRANCH) | cut -c7-10 )
 
 ifeq ($(BRANCH),master)
-	STAGE = hello-prod
+	STAGE = prod
 	ENV = prod
-else ifeq ($(BRANCH),release)
-	STAGE = hello-qa
-	ENV = qa
 else ifeq ($(BRANCH),develop)
-	STAGE = hello-develop
-	ENV = develop
-else
-	STAGE = "hello-$(TICKET_NUMBER)"
+	STAGE = dev
 	ENV = dev
+else
+	STAGE = "$(TICKET_NUMBER)"
+	ENV = fb
 endif
 
 
